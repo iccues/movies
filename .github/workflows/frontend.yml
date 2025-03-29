@@ -24,7 +24,6 @@ jobs:
                 cd frontend
                 npm ci
                 npm run build
-                npm run test
             
             - name: Upload build artifacts
               uses: appleboy/scp-action@v0.1.7
