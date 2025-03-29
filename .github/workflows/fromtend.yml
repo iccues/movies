@@ -1,0 +1,36 @@
+name: Fromtend Build and Deploy
+on:
+    push:
+        # branches:
+        #     - main
+        paths:
+            - frontend/*
+    
+
+jobs:
+    build-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                node-version: '18'
+
+            - name: Install dependencies and build
+              run: |
+                cd frontend
+                npm ci
+                npm run build
+                npm run test
+            
+            - name: Upload build artifacts
+              uses: appleboy/scp-action@v0.1.7
+              with:
+                host: ${{ secrets.HOST }}
+                username: ${{ secrets.USERNAME }}
+                password: ${{ secrets.PASSWORD }}
+                source: "frontend/dist/*"
+                target: "opt/movies/nginx/html"
