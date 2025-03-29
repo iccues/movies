@@ -33,3 +33,5 @@ jobs:
                 password: ${{ secrets.PASSWORD }}
                 source: "frontend/dist/*"
                 target: "/opt/movies/nginx/html"
+                strip_components: 2
+                rm: true
