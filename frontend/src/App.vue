@@ -23,7 +23,7 @@ let movies = ref([
       </div>
     </a>
   </div>
-  <p>Test GitHub Action - 3</p>
+  <p>Test GitHub Action - 4</p>
 </template>
 
 <style scoped>
