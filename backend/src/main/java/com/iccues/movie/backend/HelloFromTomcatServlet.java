@@ -16,5 +16,6 @@ public class HelloFromTomcatServlet extends HttpServlet {
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
         out.println("<h1>Hello From Tomcat Servlet</h1>");
+        out.println("<p>Test GitHub Action</p>");
     }
 }
