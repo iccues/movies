@@ -1,10 +1,10 @@
-name: Frontend Build and Deploy
+name: Backend Build and Deploy
 on:
   push:
     branches:
       - main
     paths:
-      - frontend/*
+      - backend/*
 
 
 jobs:
@@ -15,17 +15,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
       with:
-        node-version: '18'
-        cache: 'npm'
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
 
     - name: Build
       run: |
-        cd frontend
-        npm ci
-        npm run build
+        cd backend
+        mvn -B clean package
 
     - name: Upload build artifacts
       uses: appleboy/scp-action@v0.1.7
@@ -33,7 +33,7 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
-        source: "frontend/dist/*"
-        target: "/opt/movies/nginx/www/html"
+        source: "backend/target/api.war"
+        target: "/opt/movies/tomcat/webapps"
         strip_components: 2
-        rm: true
+        overwrite:
