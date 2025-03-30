@@ -32,6 +32,6 @@ jobs:
                 username: ${{ secrets.USERNAME }}
                 password: ${{ secrets.PASSWORD }}
                 source: "frontend/dist/*"
-                target: "/opt/movies/nginx/html"
+                target: "/opt/movies/nginx/www/html"
                 strip_components: 2
                 rm: true

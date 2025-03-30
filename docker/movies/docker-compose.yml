@@ -10,7 +10,7 @@ services:
       - 443:443
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d/
-      - ./nginx/html:/var/www/html
+      - ./nginx/www:/var/www
       - ./nginx/log:/var/log/nginx
     depends_on:
       - tomcat
