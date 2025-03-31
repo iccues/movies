@@ -1,13 +1,21 @@
 <script setup>
 import { ref } from 'vue';
 import MovieCard from './components/MovieCard.vue'
+import axios from 'axios';
 
-let movies = ref([
-    {
-        title: "机动战士高达GQuuuuuuX-Beginning-",
-        id: 1,
-    }
-])
+const movies = ref()
+
+axios.get('/api/movie_list')
+    .then(response => {
+        console.log('Response:', response);
+        return response;})
+    .then(response => {
+        movies.value = response.data;
+    })
+    .catch(error => {
+        console.error('Error fetching:', error);
+    });
+
 </script>
 
 <template>

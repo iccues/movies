@@ -20,8 +20,20 @@ public class MovieList extends HttpServlet {
         out.println("""
                 [
                   {
-                    title: "机动战士高达GQuuuuuuX-Beginning-",
-                    id: 1,
+                    "title": "BanG Dream! Ave Mujica",
+                    "id": 1
+                  },
+                  {
+                    "title": "金牌得主 (舞冰的祈愿)",
+                    "id": 2
+                  },
+                  {
+                    "title": "群花绽放彷如修罗",
+                    "id": 3
+                  },
+                  {
+                    "title": "赛马娘 芦毛灰姑娘 Part.1",
+                    "id": 4
                   }
                 ]""");
     }
