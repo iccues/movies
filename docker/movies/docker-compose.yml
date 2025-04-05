@@ -19,6 +19,7 @@ services:
     image: tomcat:latest
     container_name: tomcat
     restart: unless-stopped
+    env_file: .env
     volumes:
       - ./tomcat/webapps:/usr/local/tomcat/webapps
       - ./tomcat/logs:/usr/local/tomcat/logs

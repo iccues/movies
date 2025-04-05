@@ -1,5 +1,8 @@
 package com.iccues.movie.backend;
 
+import com.google.gson.Gson;
+import com.iccues.movie.backend.entities.MovieSummary;
+import com.iccues.movie.backend.utils.DataMapper;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,6 +12,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import java.sql.*;
+
 @WebServlet("/movie_list")
 public class MovieList extends HttpServlet {
     @Override
@@ -17,24 +22,10 @@ public class MovieList extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
 
         PrintWriter out = resp.getWriter();
-        out.println("""
-                [
-                  {
-                    "title": "BanG Dream! Ave Mujica",
-                    "id": 1
-                  },
-                  {
-                    "title": "金牌得主 (舞冰的祈愿)",
-                    "id": 2
-                  },
-                  {
-                    "title": "群花绽放彷如修罗",
-                    "id": 3
-                  },
-                  {
-                    "title": "赛马娘 芦毛灰姑娘 Part.1",
-                    "id": 4
-                  }
-                ]""");
+        try {
+            out.println(new Gson().toJson(DataMapper.select(MovieSummary.class)));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
