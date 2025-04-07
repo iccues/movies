@@ -1,21 +1,16 @@
 package com.iccues.movie.backend.utils;
 
-import com.iccues.movie.backend.utils.data.Column;
-import com.iccues.movie.backend.utils.data.DataEntity;
-import com.iccues.movie.backend.utils.data.Table;
+import com.iccues.movie.backend.utils.data.Generated;
+import com.iccues.movie.backend.utils.data.TableInfo;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DataMapper {
-    public static Object convertValue(Object value, Class<?> targetType) {
+    private static Object convertValue(Object value, Class<?> targetType) {
         Class<?> valueType = value.getClass();
 
         if (targetType.isAssignableFrom(valueType)) return value;
@@ -32,8 +27,7 @@ public class DataMapper {
         }
 
         // Handle number conversions
-        if (Number.class.isAssignableFrom(targetType) && value instanceof Number) {
-            Number number = (Number) value;
+        if (Number.class.isAssignableFrom(targetType) && value instanceof Number number) {
             if (targetType == Integer.class) return number.intValue();
             if (targetType == Long.class) return number.longValue();
             if (targetType == Double.class) return number.doubleValue();
@@ -61,13 +55,10 @@ public class DataMapper {
         throw new RuntimeException("Cannot convert " + value.getClass().getName() + " to " + targetType.getName());
     }
 
-    public static<T> T mapRow(ResultSet resultSet, Class<T> clazz) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException {
+    private static<T> T mapRow(ResultSet resultSet, Class<T> clazz) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, SQLException {
         T obj = clazz.getDeclaredConstructor().newInstance();
         for(Field field : clazz.getDeclaredFields()) {
-            Column column = field.getAnnotation(Column.class);
-            String fieldName;
-            if (column != null) fieldName = column.value();
-            else fieldName = field.getName();
+            String fieldName = TableInfo.getColumnName(field);
 
             Object fieldValue = resultSet.getObject(fieldName);
 
@@ -82,26 +73,134 @@ public class DataMapper {
         return obj;
     }
 
-    public static<T> List<T> select(Class<T> clazz) throws SQLException {
-        String tableName = TableMapper.getTableName(clazz);
+    private static ResultSet getSelectResultSet(String tableName, String whereClause) throws SQLException {
+        String sql = "SELECT * FROM " + tableName;
+        if(whereClause != null && !whereClause.isBlank()) sql += " WHERE " + whereClause;
+        Connection conn = DatabaseUtil.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        return stmt.executeQuery();
+    }
+
+    public static<T> List<T> selectAll(Class<T> clazz, String where) {
+        String tableName = TableInfo.getTableName(clazz);
 
         List<T> results = new ArrayList<>();
 
-        String sql = "SELECT * FROM " + tableName;
-
         try (
-                Connection conn = DatabaseUtil.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                ResultSet resultSet = stmt.executeQuery()
+                ResultSet resultSet = getSelectResultSet(tableName, where)
         ) {
             while (resultSet.next()) {
                 results.add(mapRow(resultSet, clazz));
             }
-        } catch (InvocationTargetException | NoSuchMethodException |
-                 InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            return null;
         }
 
         return results;
     }
+
+    public static<T> List<T> selectAll(Class<T> clazz) {
+        String tableName = TableInfo.getTableName(clazz);
+
+        List<T> results = new ArrayList<>();
+
+        try (
+                ResultSet resultSet = getSelectResultSet(tableName, null)
+        ) {
+            while (resultSet.next()) {
+                results.add(mapRow(resultSet, clazz));
+            }
+        } catch (Exception e) {
+            return null;
+        }
+
+        return results;
+    }
+
+    public static<T> T selectFirst(Class<T> clazz, String where) {
+        String tableName = TableInfo.getTableName(clazz);
+
+        try (
+                ResultSet resultSet = getSelectResultSet(tableName, where)
+        ) {
+            if(resultSet.next()) {
+                return mapRow(resultSet, clazz);
+            }
+        } catch (Exception ignore) {}
+        return null;
+    }
+
+    public static<T> T selectFirst(Class<T> clazz) {
+        String tableName = TableInfo.getTableName(clazz);
+
+        try (
+                ResultSet resultSet = getSelectResultSet(tableName, null)
+        ) {
+            if(resultSet.next()) {
+                return mapRow(resultSet, clazz);
+            }
+        } catch (Exception ignore) {}
+        return null;
+    }
+
+    public static void insert(Object object) throws IllegalAccessException, SQLException {
+        Class<?> clazz = object.getClass();
+        String tableName = TableInfo.getTableName(clazz);
+
+        List<String> columns = new ArrayList<>();
+        List<String> placeholders = new ArrayList<>();
+        List<Object> values = new ArrayList<>();
+
+        List<String> generatedColumns = new ArrayList<>();
+
+        for (Field field : clazz.getDeclaredFields()) {
+            String fieldName = TableInfo.getColumnName(field);
+
+            if(field.isAnnotationPresent(Generated.class)) {
+                generatedColumns.add(fieldName);
+            } else {
+                columns.add(fieldName);
+                placeholders.add("?");
+
+                field.setAccessible(true);
+                values.add(field.get(object));
+            }
+        }
+
+        String sql = String.format("INSERT INTO %s (%s) VALUES(%s)",
+                tableName,
+                String.join(",", columns),
+                String.join(",", placeholders)
+                );
+
+        try (PreparedStatement stmt = DatabaseUtil.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            for (int i = 0; i < values.size(); i++) {
+                stmt.setObject(i + 1, values.get(i));
+            }
+            stmt.executeUpdate();
+
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    for (int i = 0; i < generatedColumns.size(); i++) {
+                        Field field = clazz.getDeclaredField(generatedColumns.get(i));
+                        field.setAccessible(true);
+
+                        Object convertedValue = convertValue(generatedKeys.getObject(i + 1), field.getType());
+                        field.set(object, convertedValue);
+                    }
+                }
+            } catch (NoSuchFieldException e) {
+                throw new RuntimeException(e);
+            }
+
+            // 此处可能存在bug：
+            // 在Generated注解大于1个，且其顺序与MySQL表返回的顺序不同时，
+            // 回填会错误
+        }
+    }
+
+//    public static void update(Object object) throws IllegalAccessException, SQLException {
+//        Class<?> clazz = object.getClass();
+//        String tableName = TableInfo.getTableName(clazz);
+//    }
 }

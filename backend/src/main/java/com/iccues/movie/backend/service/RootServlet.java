@@ -1,4 +1,4 @@
-package com.iccues.movie.backend;
+package com.iccues.movie.backend.service;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

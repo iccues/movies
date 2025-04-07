@@ -8,10 +8,4 @@ import com.iccues.movie.backend.utils.data.Table;
 public class MovieSummary {
     private Long id;
     private String title;
-
-
-    @Override
-    public String toString() {
-        return "Movie [id=" + id + ", title=" + title + "]";
-    }
 }
