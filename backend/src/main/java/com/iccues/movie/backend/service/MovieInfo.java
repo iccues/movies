@@ -1,7 +1,7 @@
 package com.iccues.movie.backend.service;
 
 import com.google.gson.Gson;
-import com.iccues.movie.backend.entities.MovieDetail;
+import com.iccues.movie.backend.entities.movie.MovieDetail;
 import com.iccues.movie.backend.utils.DataMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 
 @WebServlet("/movie_info")
 public class MovieInfo extends HttpServlet {
@@ -20,9 +19,9 @@ public class MovieInfo extends HttpServlet {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
 
-        String id = req.getParameter("id");
+        String mid = req.getParameter("mid");
 
         PrintWriter out = resp.getWriter();
-        out.println(new Gson().toJson(DataMapper.selectFirst(MovieDetail.class, "id = " + id)));
+        out.println(new Gson().toJson(DataMapper.selectFirst(MovieDetail.class, "mid = " + mid)));
     }
 }

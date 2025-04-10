@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
-import MovieCard from './components/MovieCard.vue'
+import MovieCard from './components/MovieCard.vue';
+import UserCard from './components/UserCard.vue';
 import axios from 'axios';
 
 const movies = ref()
@@ -20,6 +21,7 @@ axios.get('/api/movie_list')
 
 <template>
     <h1>Movies</h1>
+    <UserCard />
     <MovieCard
         v-for="movie in movies"
         :key="movie.id"
