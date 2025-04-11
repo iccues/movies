@@ -1,6 +1,6 @@
-package com.iccues.movie.backend.entities;
+package com.iccues.movie.backend.entities.result;
 
-import com.google.gson.Gson;
+import com.iccues.movie.backend.utils.GsonProvider;
 
 public class Result<T> {
     private Status status;
@@ -27,6 +27,6 @@ public class Result<T> {
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return GsonProvider.GSON.toJson(this);
     }
 }

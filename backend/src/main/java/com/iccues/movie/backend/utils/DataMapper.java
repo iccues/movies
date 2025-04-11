@@ -73,21 +73,27 @@ public class DataMapper {
         return obj;
     }
 
-    private static ResultSet getSelectResultSet(String tableName, String whereClause) throws SQLException {
+    private static ResultSet getSelectResultSet(String tableName, String whereTemplate, Object... params) throws SQLException {
         String sql = "SELECT * FROM " + tableName;
-        if(whereClause != null && !whereClause.isBlank()) sql += " WHERE " + whereClause;
+        if(whereTemplate != null && !whereTemplate.isBlank()) sql += " WHERE " + whereTemplate;
+
         Connection conn = DatabaseUtil.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql);
+
+        for(int i = 0; i < params.length; i++) {
+            stmt.setObject(i + 1, params[i]);
+        }
+
         return stmt.executeQuery();
     }
 
-    public static<T> List<T> selectAll(Class<T> clazz, String where) {
+    public static<T> List<T> selectAll(Class<T> clazz, String whereTemplate, Object... params) {
         String tableName = TableInfo.getTableName(clazz);
 
         List<T> results = new ArrayList<>();
 
         try (
-                ResultSet resultSet = getSelectResultSet(tableName, where)
+                ResultSet resultSet = getSelectResultSet(tableName, whereTemplate, params);
         ) {
             while (resultSet.next()) {
                 results.add(mapRow(resultSet, clazz));
@@ -117,11 +123,11 @@ public class DataMapper {
         return results;
     }
 
-    public static<T> T selectFirst(Class<T> clazz, String where) {
+    public static<T> T selectFirst(Class<T> clazz, String whereTemplate, Object... params) {
         String tableName = TableInfo.getTableName(clazz);
 
         try (
-                ResultSet resultSet = getSelectResultSet(tableName, where)
+                ResultSet resultSet = getSelectResultSet(tableName, whereTemplate, params)
         ) {
             if(resultSet.next()) {
                 return mapRow(resultSet, clazz);

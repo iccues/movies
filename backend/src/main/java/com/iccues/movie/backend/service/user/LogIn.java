@@ -1,8 +1,7 @@
 package com.iccues.movie.backend.service.user;
 
 import com.google.gson.Gson;
-import com.iccues.movie.backend.entities.Result;
-import com.iccues.movie.backend.entities.Status;
+import com.iccues.movie.backend.entities.result.Result;
 import com.iccues.movie.backend.entities.user.RowUser;
 import com.iccues.movie.backend.entities.user.User;
 import com.iccues.movie.backend.utils.DataMapper;
@@ -25,7 +24,7 @@ public class LogIn extends HttpServlet {
         PrintWriter out = resp.getWriter();
 
         RowUser rowUser = new Gson().fromJson(req.getReader(), RowUser.class);
-        User user = DataMapper.selectFirst(User.class, "username = '" + rowUser.getUsername() + "'");
+        User user = DataMapper.selectFirst(User.class, "username = ?", rowUser.getUsername());
         if (user != null && user.checkPassword(rowUser)) {
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
