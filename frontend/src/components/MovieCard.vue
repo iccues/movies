@@ -1,21 +1,21 @@
-<script setup>
+<script setup lang="ts">
+import type { MovieSummary } from '../type/api/movie';
 
-defineProps({
-    id: Number,
-    title: String,
-})
+defineProps<{
+    movie: MovieSummary,
+}>();
 
 </script>
 
 <template>
-    <a :href="`pages/movie.html?${id}`">
+    <a :href="`pages/movie.html?mid=${movie.mid}`">
         <div>
             <img
-                :src="`images/${id}.png`"
-                :alt="title"
+                :src="`images/${movie.mid}.png`"
+                :alt="movie.title"
                 width="200"
             >
-            <p>{{ title }}</p>
+            <p>{{ movie.title }}</p>
         </div>
     </a>
 </template>

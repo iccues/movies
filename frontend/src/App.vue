@@ -1,15 +1,13 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import MovieCard from './components/MovieCard.vue';
 import UserCard from './components/UserCard.vue';
 import axios from 'axios';
+import type { MovieSummary } from './type/api/movie';
 
-const movies = ref()
+let movies = ref<MovieSummary[]>([])
 
-axios.get('/api/movie_list')
-    .then(response => {
-        console.log('Response:', response);
-        return response;})
+axios.get<MovieSummary[]>('/api/movie_list')
     .then(response => {
         movies.value = response.data;
     })
@@ -24,8 +22,7 @@ axios.get('/api/movie_list')
     <UserCard />
     <MovieCard
         v-for="movie in movies"
-        :key="movie.id"
-        :id="movie.id"
-        :title="movie.title"
+        :key="movie.mid"
+        :movie="movie"
     />
 </template>

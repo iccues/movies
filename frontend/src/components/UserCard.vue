@@ -1,7 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import axios from "axios";
-const username = ref(null);
+
+let username = ref(null);
 
 axios.get("/api/user_info/username")
     .then((response) => {

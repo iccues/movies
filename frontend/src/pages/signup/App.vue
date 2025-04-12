@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import axios from "axios";
 
-const username = ref("");
-const password = ref("");
-const confirmPassword = ref("");
+let username = ref("");
+let password = ref("");
+let confirmPassword = ref("");
 
 function login() {
     if (password.value !== confirmPassword.value) {
