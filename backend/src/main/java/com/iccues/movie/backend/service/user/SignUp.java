@@ -1,7 +1,7 @@
 package com.iccues.movie.backend.service.user;
 
 import com.google.gson.Gson;
-import com.iccues.movie.backend.entities.result.Result;
+import com.iccues.movie.backend.entities.Result;
 import com.iccues.movie.backend.entities.user.User;
 import com.iccues.movie.backend.entities.user.RowUser;
 import com.iccues.movie.backend.utils.DataMapper;
@@ -26,9 +26,9 @@ public class SignUp extends HttpServlet {
             DataMapper.insert(user);
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
-            out.println(Result.Success(null));
+            out.println(Result.Ok());
         } catch (IllegalAccessException | SQLException e) {
-            out.println(Result.Failure("Sign up failed"));
+            out.println(Result.Err("Sign up failed"));
         }
     }
 }

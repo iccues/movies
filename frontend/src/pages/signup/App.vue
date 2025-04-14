@@ -1,25 +1,26 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import axios from "axios";
+import type { Result } from "../../type/result";
 
 let username = ref("");
 let password = ref("");
 let confirmPassword = ref("");
 
-function login() {
+function signup() {
     if (password.value !== confirmPassword.value) {
         alert("Passwords do not match!");
         return;
     }
-    axios.post("/api/signup", {
+    axios.post<Result<null>>("/api/signup", {
         username: username.value,
         password: password.value,
     })
     .then((response) => {
-        if(response.data.status === "SUCCESS") {
+        if(response.data.ok === true) {
             window.location.href = "/";
         } else {
-            alert("Login failed: " + response.data.message);
+            alert("Login failed: " + response.data.error);
         }
     })
     .catch((error) => {
@@ -44,6 +45,6 @@ function login() {
         <input type="password" v-model="confirmPassword" placeholder="confirm password" />
     </div>
     <div>
-        <button @click="login">Login</button>
+        <button @click="signup">Login</button>
     </div>
 </template>

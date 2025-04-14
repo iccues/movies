@@ -14,6 +14,7 @@ export default defineConfig(({ mode }) => {
           resolve(__dirname, './pages/movie.html'),
           resolve(__dirname, './pages/login.html'),
           resolve(__dirname, './pages/signup.html'),
+          resolve(__dirname, './pages/newOrder.html'),
         ],
       },
     },

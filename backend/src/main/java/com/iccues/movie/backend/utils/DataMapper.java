@@ -1,6 +1,7 @@
 package com.iccues.movie.backend.utils;
 
 import com.iccues.movie.backend.utils.data.Generated;
+import com.iccues.movie.backend.utils.data.Key;
 import com.iccues.movie.backend.utils.data.TableInfo;
 
 import java.lang.reflect.Field;
@@ -205,8 +206,40 @@ public class DataMapper {
         }
     }
 
-//    public static void update(Object object) throws IllegalAccessException, SQLException {
-//        Class<?> clazz = object.getClass();
-//        String tableName = TableInfo.getTableName(clazz);
-//    }
+    public static void update(Object object) throws IllegalAccessException, SQLException {
+        Class<?> clazz = object.getClass();
+        String tableName = TableInfo.getTableName(clazz);
+
+        String pkColumn = null;
+        Object pkValue = null;
+
+        // columns and placeholders
+        List<String> sets = new ArrayList<>();
+        List<Object> values = new ArrayList<>();
+
+        for(Field field : clazz.getDeclaredFields()) {
+            String fieldName = TableInfo.getColumnName(field);
+            field.setAccessible(true);
+            Object fieldValue = field.get(object);
+
+            if(field.isAnnotationPresent(Key.class)) {
+                pkColumn = fieldName;
+                pkValue = fieldValue;
+            } else {
+                sets.add(fieldName + " = ?");
+                values.add(fieldValue);
+            }
+        }
+
+        if (pkColumn == null) throw new RuntimeException("No @Key field found");
+
+        String sql = String.format("UPDATE %s SET %s WHERE %s = ?", tableName, String.join(", ", sets), pkColumn);
+        try (PreparedStatement stmt = DatabaseUtil.getConnection().prepareStatement(sql)) {
+            for(int i = 0; i < values.size(); i++) {
+                stmt.setObject(i + 1, values.get(i));
+            }
+            stmt.setObject(values.size() + 1, pkValue);
+            stmt.executeUpdate();
+        }
+    }
 }

@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import axios from "axios";
+import { type Result } from "../type/result";
 
-let username = ref(null);
+let username = ref<string | null>(null);
 
-axios.get("/api/user_info/username")
+axios.get<Result<string>>("/api/user_info/username")
     .then((response) => {
-        if (response.data.status === "SUCCESS") {
-            username.value = response.data.data;
+        if (response.data.ok === true) {
+            username.value = response.data.value;
         }
     })
     .catch((error) => {

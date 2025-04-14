@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import axios from "axios";
+import type { Result } from "../../type/result";
 
 let username = ref("");
 let password = ref("");
 
 function login() {
-    axios.post("/api/login", {
+    axios.post<Result<null>>("/api/login", {
         username: username.value,
         password: password.value,
     })
     .then((response) => {
-        if(response.data.status === "SUCCESS") {
+        if(response.data.ok === true) {
             window.location.href = "/";
         } else {
-            alert("Login failed: " + response.data.message);
+            alert("Login failed: " + response.data.error);
         }
     })
     .catch((error) => {

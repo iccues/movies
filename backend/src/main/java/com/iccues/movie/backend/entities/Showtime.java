@@ -20,4 +20,12 @@ public class Showtime {
     // Info
     private String cinemaName;
     private String hallName;
+
+    public void bookedSeatsIncrease() {
+        bookedSeats += 1;
+    }
+
+    public Long getSid() {
+        return sid;
+    }
 }

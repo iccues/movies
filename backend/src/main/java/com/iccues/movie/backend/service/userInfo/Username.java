@@ -1,6 +1,6 @@
 package com.iccues.movie.backend.service.userInfo;
 
-import com.iccues.movie.backend.entities.result.Result;
+import com.iccues.movie.backend.entities.Result;
 import com.iccues.movie.backend.entities.user.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,8 +20,6 @@ public class Username extends HttpServlet {
         PrintWriter out = resp.getWriter();
 
         User user = (User) req.getSession().getAttribute("user");
-        if (user != null) {
-            out.println(Result.Success(user.getUsername()));
-        }
+        out.println(Result.Ok(user.getUsername()));
     }
 }
