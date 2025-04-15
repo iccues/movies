@@ -25,7 +25,7 @@ public class SignUp extends HttpServlet {
         try {
             DataMapper.insert(user);
             HttpSession session = req.getSession();
-            session.setAttribute("user", user);
+            session.setAttribute("uid", user.getUid());
             out.println(Result.Ok());
         } catch (IllegalAccessException | SQLException e) {
             out.println(Result.Err("Sign up failed"));

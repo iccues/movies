@@ -27,7 +27,7 @@ public class LogIn extends HttpServlet {
         User user = DataMapper.selectFirst(User.class, "username = ?", rowUser.getUsername());
         if (user != null && user.checkPassword(rowUser)) {
             HttpSession session = req.getSession();
-            session.setAttribute("user", user);
+            session.setAttribute("uid", user.getUid());
             out.println(Result.Ok());
         }
         else {
