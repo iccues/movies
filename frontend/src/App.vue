@@ -19,9 +19,18 @@ axios.get<MovieSummary[]>('/api/movie_list')
 
 <template>
     <TopUserBar />
-    <MovieCard
-        v-for="movie in movies"
-        :key="movie.mid"
-        :movie="movie"
-    />
+    <div class="movie-grid">
+        <MovieCard v-for="movie in movies" :key="movie.mid" :movie="movie" />
+    </div>
 </template>
+
+<style scoped>
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 24px;
+    padding: 0px 40px 40px;
+    justify-items: center;
+    box-sizing: border-box;
+}
+</style>

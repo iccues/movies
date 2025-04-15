@@ -38,6 +38,7 @@ onMounted(() => {
         </div>
         <AuthDialog v-model:dialogVisible="showAuthDialog" />
     </div>
+    <div :style="{ height: '60px'}"></div>
 </template>
 
 <style scoped>
