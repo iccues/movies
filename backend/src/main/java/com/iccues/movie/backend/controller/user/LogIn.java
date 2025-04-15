@@ -1,4 +1,4 @@
-package com.iccues.movie.backend.service.user;
+package com.iccues.movie.backend.controller.user;
 
 import com.google.gson.Gson;
 import com.iccues.movie.backend.entities.Result;

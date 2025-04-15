@@ -1,4 +1,4 @@
-package com.iccues.movie.backend.service.userInfo;
+package com.iccues.movie.backend.controller.userInfo;
 
 import com.iccues.movie.backend.entities.Result;
 import com.iccues.movie.backend.entities.user.User;
