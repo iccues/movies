@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import MovieCard from './components/MovieCard.vue';
-import UserCard from './components/UserCard.vue';
+import TopUserBar from './components/TopUserBar.vue';
 import axios from 'axios';
 import type { MovieSummary } from './type/api/movie';
 
@@ -18,8 +18,7 @@ axios.get<MovieSummary[]>('/api/movie_list')
 </script>
 
 <template>
-    <h1>Movies</h1>
-    <UserCard />
+    <TopUserBar />
     <MovieCard
         v-for="movie in movies"
         :key="movie.mid"

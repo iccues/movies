@@ -22,6 +22,9 @@ public class Showtime {
     private String hallName;
 
     public void bookedSeatsIncrease() {
+        if (totalSeats >= bookedSeats) {
+            throw new RuntimeException("");
+        }
         bookedSeats += 1;
     }
 
