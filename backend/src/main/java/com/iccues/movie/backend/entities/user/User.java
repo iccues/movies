@@ -14,6 +14,7 @@ public class User {
     private Long uid = null;
     private String username;
     private String passwordHash;
+    private Boolean isAdmin = false;
 
     public User() {}
     public User(String username, String passwordHash) {

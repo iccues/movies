@@ -6,4 +6,5 @@ export interface MovieSummary {
 export interface MovieDetails {
     mid: number;
     title: string;
+    introduction: string;
 }

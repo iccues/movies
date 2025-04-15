@@ -24,11 +24,9 @@ axios.get<Showtime[]>(`/api/showtime_list?mid=${mid}`)
     <div class="movie-container">
         <div class="movie-info">
             <img :src="`/images/${movieDetail?.mid}.png`" :alt="movieDetail?.title" class="movie-image" />
-            <div class="movie-text">
-                <div class="movie-title">{{ movieDetail?.title }}</div>
-                <p class="movie-intro">{{ movieDetail?.introduction }}</p>
-            </div>
+            <div class="movie-title">{{ movieDetail?.title }}</div>
         </div>
+
         <el-table :data="showtimes" style="width: 100%" stripe>
             <el-table-column prop="startTime" label="Start Time" width="150" />
             <el-table-column prop="endTime" label="End Time" width="150" />
@@ -60,23 +58,8 @@ axios.get<Showtime[]>(`/api/showtime_list?mid=${mid}`)
 
 .movie-info {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     margin-bottom: 32px;
-}
-
-.movie-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.movie-title {
-    font-size: 24px;
-    font-weight: 600;
-}
-
-.movie-intro {
-    margin-top: 8px;
-    line-height: 1.6;
 }
 
 .movie-image {
@@ -84,5 +67,10 @@ axios.get<Showtime[]>(`/api/showtime_list?mid=${mid}`)
     height: auto;
     margin-right: 24px;
     border-radius: 8px;
+}
+
+.movie-title {
+    font-size: 24px;
+    font-weight: 600;
 }
 </style>
