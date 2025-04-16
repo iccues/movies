@@ -1,8 +1,8 @@
 export interface Showtime {
     sid: number;
     mid: number;
-    startTime: string;
-    endTime: string;
+    startTime: Date;
+    endTime: Date;
     price: number;
     totalSeats: number;
     bookedSeats: number;
