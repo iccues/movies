@@ -8,11 +8,18 @@ import { ElButton } from "element-plus";
 let username = ref<string | null>(null);
 let showAuthDialog = ref(false);
 
+defineProps<{
+    username?: string | null
+}>();
+const emit = defineEmits<{
+    (e: 'update:username', value: string | null): void
+}>();
+
 onMounted(() => {
     axios.get<Result<string>>("/api/user_info/username")
         .then((res) => {
             if (res.data.ok) {
-                username.value = res.data.value;
+                emit('update:username', res.data.value);
             }
         })
         .catch((err) => {
@@ -38,7 +45,7 @@ onMounted(() => {
         </div>
         <AuthDialog v-model:dialogVisible="showAuthDialog" />
     </div>
-    <div :style="{ height: '60px'}"></div>
+    <div :style="{ height: '60px' }"></div>
 </template>
 
 <style scoped>

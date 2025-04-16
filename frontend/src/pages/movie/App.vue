@@ -5,10 +5,14 @@ import type { MovieDetails } from '../../type/api/movie';
 import type { Showtime } from '../../type/api/showtime';
 import axios from 'axios';
 import TopUserBar from '../../components/TopUserBar.vue';
+import PayDialog from '../../components/PayDialog.vue'
 
 let movieDetail = ref<MovieDetails | null>(null);
 let showtimes = ref<Showtime[]>([]);
 let mid = new URLSearchParams(window.location.search).get('mid');
+const showPayDialog = ref(false)
+const selectedSid = ref<number | null>(null)
+const username = ref<string | null>(null)
 
 axios.get<MovieDetails>(`/api/movie_info?mid=${mid}`)
     .then(res => movieDetail.value = res.data)
@@ -17,10 +21,15 @@ axios.get<MovieDetails>(`/api/movie_info?mid=${mid}`)
 axios.get<Showtime[]>(`/api/showtime_list?mid=${mid}`)
     .then(res => showtimes.value = res.data)
     .catch(err => console.error('Showtime fetch failed:', err));
+
+function bookNow(sid: number) {
+    selectedSid.value = sid
+    showPayDialog.value = true
+}
 </script>
 
 <template>
-    <TopUserBar />
+    <TopUserBar v-model:username="username" />
     <div class="movie-container">
         <div class="movie-info">
             <img :src="`/images/${movieDetail?.mid}.png`" :alt="movieDetail?.title" class="movie-image" />
@@ -42,13 +51,15 @@ axios.get<Showtime[]>(`/api/showtime_list?mid=${mid}`)
             </el-table-column>
             <el-table-column label="Action" width="120">
                 <template #default="{ row }">
-                    <el-button size="small" :href="`/pages/newOrder.html?sid=${row.sid}`" tag="a">
+                    <el-button size="small" @click="bookNow(row.sid)"
+                        :disabled="row.bookedSeats >= row.totalSeats || !username">
                         Book Now
                     </el-button>
                 </template>
             </el-table-column>
         </el-table>
     </div>
+    <PayDialog v-if="selectedSid" v-model="showPayDialog" :sid="selectedSid" />
 </template>
 
 <style scoped>
