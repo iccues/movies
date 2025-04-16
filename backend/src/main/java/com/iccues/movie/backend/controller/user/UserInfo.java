@@ -1,7 +1,8 @@
-package com.iccues.movie.backend.controller.userInfo;
+package com.iccues.movie.backend.controller.user;
 
 import com.iccues.movie.backend.entities.Result;
 import com.iccues.movie.backend.entities.user.User;
+import com.iccues.movie.backend.utils.GsonProvider;
 import com.iccues.movie.backend.utils.UserSession;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,8 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/user_info/username")
-public class Username extends HttpServlet {
+@WebServlet("/user/user_info")
+public class UserInfo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
@@ -22,7 +23,7 @@ public class Username extends HttpServlet {
 
         User user = UserSession.getUser(req);
         if (user != null) {
-            out.println(Result.Ok(user.getUsername()));
+            out.println(GsonProvider.GSON.toJson(user));
         } else {
             out.println(Result.Err("User not logged in"));
         }

@@ -14,11 +14,11 @@ const showPayDialog = ref(false)
 const selectedSid = ref<number | null>(null)
 const username = ref<string | null>(null)
 
-axios.get<MovieDetails>(`/api/movie_info?mid=${mid}`)
+axios.get<MovieDetails>(`/api/movie/movie_info?mid=${mid}`)
     .then(res => movieDetail.value = res.data)
     .catch(err => console.error('Movie fetch failed:', err));
 
-axios.get<Showtime[]>(`/api/showtime_list?mid=${mid}`)
+axios.get<Showtime[]>(`/api/showtime/showtime_list?mid=${mid}`)
     .then(res => showtimes.value = res.data)
     .catch(err => console.error('Showtime fetch failed:', err));
 

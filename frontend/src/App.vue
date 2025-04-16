@@ -7,7 +7,7 @@ import type { MovieSummary } from './type/api/movie';
 
 let movies = ref<MovieSummary[]>([])
 
-axios.get<MovieSummary[]>('/api/movie_list')
+axios.get<MovieSummary[]>('/api/movie/movie_list')
     .then(response => {
         movies.value = response.data;
     })

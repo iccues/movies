@@ -16,7 +16,7 @@ watch(() => props.modelValue, val => dialogVisible.value = val)
 watch(dialogVisible, val => emit('update:modelValue', val))
 
 function pay() {
-    axios.get<Result<null>>(`/api/ticket/buy_ticket?sid=${props.sid}`)
+    axios.post<Result<null>>(`/api/ticket/buy_ticket?sid=${props.sid}`)
         .then(res => {
             if (res.data.ok) {
                 ElMessage.success('Payment successful!')

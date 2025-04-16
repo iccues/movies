@@ -74,7 +74,7 @@ const handleLogin = async () => {
     if (!loginFormRef.value) return;
     await loginFormRef.value.validate((valid) => {
         if (!valid) return;
-        axios.post<Result<null>>("/api/login", {
+        axios.post<Result<null>>("/api/user/login", {
             username: loginForm.value.username,
             password: loginForm.value.password
         }).then((response) => {
@@ -96,7 +96,7 @@ const handleSignup = async () => {
     if (!signupFormRef.value) return;
     await signupFormRef.value.validate((valid) => {
         if (!valid) return;
-        axios.post<Result<null>>("/api/signup", {
+        axios.post<Result<null>>("/api/user/signup", {
             username: signupForm.value.username,
             password: signupForm.value.password
         }).then((response) => {

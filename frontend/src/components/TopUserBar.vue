@@ -18,7 +18,7 @@ const emit = defineEmits<{
 }>();
 
 onMounted(() => {
-    axios.get<Result<string>>("/api/user_info/username")
+    axios.get<Result<string>>("/api/user/username")
         .then((res) => {
             if (res.data.ok) {
                 emit('update:username', res.data.value);

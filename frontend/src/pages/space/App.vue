@@ -10,11 +10,11 @@ let movieDetail = ref<MovieDetails | null>(null);
 let showtimes = ref<Showtime[]>([]);
 let mid = new URLSearchParams(window.location.search).get('mid');
 
-axios.get<MovieDetails>(`/api/movie_info?mid=${mid}`)
+axios.get<MovieDetails>(`/api/movie/movie_info?mid=${mid}`)
     .then(res => movieDetail.value = res.data)
     .catch(err => console.error('Movie fetch failed:', err));
 
-axios.get<Showtime[]>(`/api/showtime_list?mid=${mid}`)
+axios.get<Showtime[]>(`/api/showtime/showtime_list?mid=${mid}`)
     .then(res => showtimes.value = res.data)
     .catch(err => console.error('Showtime fetch failed:', err));
 </script>
