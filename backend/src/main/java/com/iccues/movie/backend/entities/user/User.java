@@ -22,14 +22,17 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
-    public boolean checkPassword(RowUser rowUser) {
-        return BCrypt.checkpw(rowUser.getPassword(), this.passwordHash);
+    public boolean checkPassword(String password) {
+        return BCrypt.checkpw(password, this.passwordHash);
+    }
+
+    public void setPassword(String password) {
+        this.passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
     public Long getUid() {
         return uid;
     }
-
     public String getUsername() {
         return username;
     }

@@ -26,7 +26,7 @@ public class LogIn extends HttpServlet {
 
         RowUser rowUser = GsonProvider.GSON.fromJson(req.getReader(), RowUser.class);
         User user = DataMapper.selectFirst(User.class, "username = ?", rowUser.getUsername());
-        if (user != null && user.checkPassword(rowUser)) {
+        if (user != null && user.checkPassword(rowUser.getPassword())) {
             HttpSession session = req.getSession();
             session.setAttribute("uid", user.getUid());
             out.println(Result.Ok());
