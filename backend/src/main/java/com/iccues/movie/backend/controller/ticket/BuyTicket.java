@@ -1,8 +1,8 @@
-package com.iccues.movie.backend.controller.userInfo;
+package com.iccues.movie.backend.controller.ticket;
 
 
 import com.iccues.movie.backend.entities.Showtime;
-import com.iccues.movie.backend.entities.Ticket;
+import com.iccues.movie.backend.entities.ticket.Ticket;
 import com.iccues.movie.backend.entities.Result;
 import com.iccues.movie.backend.entities.user.User;
 import com.iccues.movie.backend.utils.DataMapper;
@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 
-@WebServlet("/user_info/buy_ticket")
+@WebServlet("/ticket/buy_ticket")
 public class BuyTicket extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

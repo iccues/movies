@@ -3,6 +3,8 @@ package com.iccues.movie.backend.utils;
 import com.iccues.movie.backend.utils.data.Generated;
 import com.iccues.movie.backend.utils.data.Key;
 import com.iccues.movie.backend.utils.data.TableInfo;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -88,6 +90,7 @@ public class DataMapper {
         return stmt.executeQuery();
     }
 
+    @NotNull
     public static<T> List<T> selectAll(Class<T> clazz, String whereTemplate, Object... params) {
         String tableName = TableInfo.getTableName(clazz);
 
@@ -100,12 +103,13 @@ public class DataMapper {
                 results.add(mapRow(resultSet, clazz));
             }
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException(e);
         }
 
         return results;
     }
 
+    @NotNull
     public static<T> List<T> selectAll(Class<T> clazz) {
         String tableName = TableInfo.getTableName(clazz);
 
@@ -118,12 +122,13 @@ public class DataMapper {
                 results.add(mapRow(resultSet, clazz));
             }
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException(e);
         }
 
         return results;
     }
 
+    @Nullable
     public static<T> T selectFirst(Class<T> clazz, String whereTemplate, Object... params) {
         String tableName = TableInfo.getTableName(clazz);
 
@@ -132,11 +137,15 @@ public class DataMapper {
         ) {
             if(resultSet.next()) {
                 return mapRow(resultSet, clazz);
+            } else {
+                return null;
             }
-        } catch (Exception ignore) {}
-        return null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
+    @Nullable
     public static<T> T selectFirst(Class<T> clazz) {
         String tableName = TableInfo.getTableName(clazz);
 
@@ -145,9 +154,12 @@ public class DataMapper {
         ) {
             if(resultSet.next()) {
                 return mapRow(resultSet, clazz);
+            } else {
+                return null;
             }
-        } catch (Exception ignore) {}
-        return null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void insert(Object object) throws IllegalAccessException, SQLException {

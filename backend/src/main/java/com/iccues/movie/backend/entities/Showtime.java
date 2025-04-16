@@ -31,4 +31,19 @@ public class Showtime {
     public Long getSid() {
         return sid;
     }
+    public Long getMid() {
+        return mid;
+    }
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+    public String getCinemaName() {
+        return cinemaName;
+    }
+    public String getHallName() {
+        return hallName;
+    }
 }

@@ -8,4 +8,8 @@ import com.iccues.movie.backend.utils.data.Table;
 public class MovieSummary {
     private Long mid;
     private String title;
+
+    public String getTitle() {
+        return title;
+    }
 }
