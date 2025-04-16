@@ -4,7 +4,7 @@ import axios from 'axios'
 import { ElMessage, ElDialog, ElTable, ElTableColumn, ElButton } from 'element-plus'
 import type { TicketDetail } from '../type/api/ticketDetail'
 
-const props = defineProps<{
+defineProps<{
     modelValue: boolean
 }>()
 
