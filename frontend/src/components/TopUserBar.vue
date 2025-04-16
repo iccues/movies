@@ -2,13 +2,15 @@
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import { type Result } from "../type/result";
+import { ElButton } from "element-plus";
 import AuthDialog from "./AuthDialog.vue";
 import TicketListDialog from "./TicketListDialog.vue";
-import { ElButton } from "element-plus";
+import UserSettingsDialog from "./UserSettingsDialog.vue";
 
 let username = ref<string | null>(null);
 let showAuthDialog = ref(false);
 let showTicketListDialog = ref(false);
+let showUserSettingsDialog = ref(false);
 
 defineProps<{
     username?: string | null
@@ -39,7 +41,7 @@ onMounted(() => {
             </div>
             <div class="right">
                 <template v-if="username">
-                    <el-button>{{ username }}</el-button>
+                    <el-button @click="showUserSettingsDialog = true">{{ username }}</el-button>
                     <el-button @click="showTicketListDialog = true">My Tickets</el-button>
                 </template>
                 <template v-else>
@@ -49,6 +51,7 @@ onMounted(() => {
         </div>
         <AuthDialog v-model:dialogVisible="showAuthDialog" />
         <TicketListDialog v-model="showTicketListDialog" />
+        <UserSettingsDialog v-model:visible="showUserSettingsDialog" />
     </div>
     <div :style="{ height: '60px' }"></div>
 </template>

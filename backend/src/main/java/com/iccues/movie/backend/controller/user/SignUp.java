@@ -5,6 +5,7 @@ import com.iccues.movie.backend.entities.Result;
 import com.iccues.movie.backend.entities.user.User;
 import com.iccues.movie.backend.entities.user.RowUser;
 import com.iccues.movie.backend.utils.DataMapper;
+import com.iccues.movie.backend.utils.GsonProvider;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
@@ -20,7 +21,7 @@ public class SignUp extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         PrintWriter out = resp.getWriter();
 
-        RowUser rowUser = new Gson().fromJson(req.getReader(), RowUser.class);
+        RowUser rowUser = GsonProvider.GSON.fromJson(req.getReader(), RowUser.class);
         User user = rowUser.intoHashedUser();
         try {
             DataMapper.insert(user);
