@@ -13,6 +13,7 @@ export default defineConfig(({ mode }) => {
           resolve(__dirname, './index.html'),
           resolve(__dirname, './pages/movie.html'),
           resolve(__dirname, './pages/newOrder.html'),
+          resolve(__dirname, './pages/space.html'),
         ],
       },
     },
