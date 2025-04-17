@@ -254,4 +254,28 @@ public class DataMapper {
             stmt.executeUpdate();
         }
     }
+
+    public static void delete(Object object) throws IllegalAccessException, SQLException {
+        Class<?> clazz = object.getClass();
+        String tableName = TableInfo.getTableName(clazz);
+
+        String pkColumn = null;
+        Object pkValue = null;
+
+        for(Field field : clazz.getDeclaredFields()) {
+            if(field.isAnnotationPresent(Key.class)) {
+                pkColumn = TableInfo.getColumnName(field);
+
+                field.setAccessible(true);
+                pkValue = field.get(object);
+            }
+        }
+
+        if (pkColumn == null) throw new RuntimeException("No @Key field found");
+        String sql = String.format("DELETE FROM %s WHERE %s = ?", tableName, pkColumn);
+        try (PreparedStatement stmt = DatabaseUtil.getConnection().prepareStatement(sql)) {
+            stmt.setObject(1, pkValue);
+            stmt.executeUpdate();
+        }
+    }
 }
