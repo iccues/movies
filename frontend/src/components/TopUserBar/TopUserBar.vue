@@ -6,29 +6,30 @@ import { ElButton } from "element-plus";
 import AuthDialog from "./AuthDialog.vue";
 import TicketListDialog from "./TicketListDialog.vue";
 import UserSettingsDialog from "./UserSettingsDialog.vue";
+import type { UserInfo } from "../../type/api/user";
 
-let username = ref<string | null>(null);
+let userInfo = ref<UserInfo | null>(null);
 let showAuthDialog = ref(false);
 let showTicketListDialog = ref(false);
 let showUserSettingsDialog = ref(false);
 
 defineProps<{
-    username?: string | null
+    userInfo?: UserInfo | null
 }>();
 const emit = defineEmits<{
-    (e: 'update:username', value: string | null): void
+    (e: 'update:userInfo', value: UserInfo | null): void
 }>();
 
 onMounted(() => {
-    axios.get<Result<string>>("/api/user/username")
+    axios.get<Result<UserInfo>>("/api/user/user_info")
         .then((res) => {
             if (res.data.ok) {
-                emit('update:username', res.data.value);
-                username.value = res.data.value;
+                emit('update:userInfo', res.data.value);
+                userInfo.value = res.data.value;
             }
         })
         .catch((err) => {
-            console.error("Failed to fetch username:", err);
+            console.error("Failed to fetch userInfo:", err);
         });
 });
 </script>
@@ -40,9 +41,10 @@ onMounted(() => {
                 <span class="app-name">Movies</span>
             </div>
             <div class="right">
-                <template v-if="username">
-                    <el-button @click="showUserSettingsDialog = true">{{ username }}</el-button>
+                <template v-if="userInfo">
+                    <el-button @click="showUserSettingsDialog = true">{{ userInfo.username }}</el-button>
                     <el-button @click="showTicketListDialog = true">My Tickets</el-button>
+                    <el-button v-if="userInfo.isAdmin" href="/pages/manage.html" tag="a">Management</el-button>
                 </template>
                 <template v-else>
                     <el-button @click="showAuthDialog = true">Log In / Sign Up</el-button>

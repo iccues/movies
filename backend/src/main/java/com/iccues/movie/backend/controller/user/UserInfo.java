@@ -2,7 +2,6 @@ package com.iccues.movie.backend.controller.user;
 
 import com.iccues.movie.backend.entities.Result;
 import com.iccues.movie.backend.entities.user.User;
-import com.iccues.movie.backend.utils.GsonProvider;
 import com.iccues.movie.backend.utils.UserSession;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,7 +22,7 @@ public class UserInfo extends HttpServlet {
 
         User user = UserSession.getUser(req);
         if (user != null) {
-            out.println(GsonProvider.GSON.toJson(user));
+            out.println(Result.Ok(new com.iccues.movie.backend.entities.user.UserInfo(user)));
         } else {
             out.println(Result.Err("User not logged in"));
         }

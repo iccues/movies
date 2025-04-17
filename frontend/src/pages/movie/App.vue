@@ -6,13 +6,14 @@ import type { Showtime } from '../../type/api/showtime';
 import axios from 'axios';
 import TopUserBar from '../../components/TopUserBar/TopUserBar.vue';
 import PayDialog from '../../components/PayDialog.vue'
+import type { UserInfo } from '../../type/api/user';
 
 let movieDetail = ref<MovieDetail | null>(null);
 let showtimes = ref<Showtime[]>([]);
 let mid = new URLSearchParams(window.location.search).get('mid');
 const showPayDialog = ref(false)
 const selectedSid = ref<number | null>(null)
-const username = ref<string | null>(null)
+const userInfo = ref<UserInfo | null>(null)
 
 axios.get<MovieDetail>(`/api/movie/movie_info?mid=${mid}`)
     .then(res => movieDetail.value = res.data)
@@ -29,7 +30,7 @@ function bookNow(sid: number) {
 </script>
 
 <template>
-    <TopUserBar v-model:username="username" />
+    <TopUserBar v-model:user-info="userInfo" />
     <div class="movie-container">
         <div class="movie-info">
             <img :src="`/images/${movieDetail?.mid}.png`" :alt="movieDetail?.title" class="movie-image" />
@@ -52,7 +53,7 @@ function bookNow(sid: number) {
             <el-table-column label="Action" width="120">
                 <template #default="{ row }">
                     <el-button size="small" @click="bookNow(row.sid)"
-                        :disabled="row.bookedSeats >= row.totalSeats || !username">
+                        :disabled="row.bookedSeats >= row.totalSeats || !userInfo">
                         Book Now
                     </el-button>
                 </template>
