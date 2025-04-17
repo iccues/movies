@@ -82,7 +82,7 @@ function deleteAccount() {
             type: 'warning',
         }
     ).then(() => {
-        axios.post<Result<null>>('/api/user/delete_account').then(res => {
+        axios.delete<Result<null>>('/api/user/delete_account').then(res => {
             if (res.data.ok) {
                 ElMessage.success('Account deleted');
                 window.location.reload();

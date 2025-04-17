@@ -34,9 +34,15 @@ function deleteMovie(mid: string) {
         cancelButtonText: 'No',
         type: 'warning'
     }).then(() => {
-        axios.delete(`/api/movies/delete?mid=${mid}`).then(() => {
-            ElMessage.success('Movie deleted');
-            fetchMovies();
+        axios.delete(`/api/movie/delete?mid=${mid}`).then((res) => {
+            if (res.data.ok) {
+                ElMessage.success('Movie deleted successfully!');
+                fetchMovies();
+            } else {
+                ElMessage.error(res.data.msg || 'Failed to delete movie!');
+            }
+        }).catch(() => {
+            ElMessage.error('Failed to delete movie!');
         });
     });
 }

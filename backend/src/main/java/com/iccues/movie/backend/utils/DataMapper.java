@@ -278,4 +278,16 @@ public class DataMapper {
             stmt.executeUpdate();
         }
     }
+
+    public static void delete(Class<?> clazz, String whereTemplate, Object... params) throws SQLException {
+        String tableName = TableInfo.getTableName(clazz);
+
+        String sql = String.format("DELETE FROM %s WHERE %s", tableName, whereTemplate);
+        try (PreparedStatement stmt = DatabaseUtil.getConnection().prepareStatement(sql)) {
+            for (int i = 0; i < params.length; i++) {
+                stmt.setObject(i + 1, params[i]);
+            }
+            stmt.executeUpdate();
+        }
+    }
 }

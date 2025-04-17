@@ -17,22 +17,18 @@ import java.sql.SQLException;
 @WebServlet("/user/delete_account")
 public class DeleteAccount extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         PrintWriter out = resp.getWriter();
 
-        User user = UserSession.getUser(req);
-        if (user == null) {
-            out.println(Result.Err("User not logged in"));
-            return;
-        }
+        Long uid = (Long) req.getSession().getAttribute("uid");
 
         try {
-            DataMapper.delete(user);
+            DataMapper.delete(User.class, "uid = ?", uid);
             UserSession.DeleteSession(req, resp);
             out.println(Result.Ok());
-        } catch (IllegalAccessException | SQLException e) {
+        } catch (Exception e) {
             out.println(Result.Err(e.getMessage()));
         }
     }
