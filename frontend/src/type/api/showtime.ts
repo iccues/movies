@@ -1,11 +1,11 @@
 export interface Showtime {
-    sid: number;
+    sid?: number;
     mid: number;
-    startTime: Date;
-    endTime: Date;
+    startTime: string | Date;
+    endTime: string | Date;
     price: number;
     totalSeats: number;
-    bookedSeats: number;
+    bookedSeats?: number;
 
     cinemaName: string;
     hallName: string;

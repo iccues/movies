@@ -15,7 +15,7 @@ public class Showtime {
     private LocalDateTime endTime;
     private Long price;
     private Long totalSeats;
-    private Long bookedSeats;
+    private Long bookedSeats = 0L;
 
     // Info
     private String cinemaName;

@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import { ElMessage, ElMessageBox, ElTable, ElTableColumn, ElButton } from 'element-plus';
 import axios from 'axios';
 import type { MovieDetail } from '../../type/api/movie';
-import AddMovieDialog from './AddMovieDialog.vue';
+import AddMovieDialog from './AddEditMovieDialog.vue';
 
 
 const movies = ref<MovieDetail[]>([]);
