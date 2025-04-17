@@ -19,6 +19,11 @@ public class UserSession {
         return DataMapper.selectFirst(User.class, "uid = ?", uid);
     }
 
+    public static boolean isUserAdmin(HttpServletRequest req) {
+        User user = getUser(req);
+        return user != null && user.isAdmin();
+    }
+
     public static void DeleteSession(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
         if (session != null) session.invalidate();

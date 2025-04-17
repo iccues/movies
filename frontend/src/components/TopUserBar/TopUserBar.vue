@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import { type Result } from "../type/result";
+import { type Result } from "../../type/result";
 import { ElButton } from "element-plus";
 import AuthDialog from "./AuthDialog.vue";
 import TicketListDialog from "./TicketListDialog.vue";

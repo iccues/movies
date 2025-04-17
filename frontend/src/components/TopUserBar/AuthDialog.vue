@@ -13,7 +13,7 @@ import {
     type FormInstance,
     type FormRules
 } from "element-plus";
-import { type Result } from "../type/result";
+import { type Result } from "../../type/result";
 
 interface LoginForm {
     username: string;

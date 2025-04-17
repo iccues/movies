@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { ElMessage, ElDialog, ElTable, ElTableColumn, ElButton } from 'element-plus'
-import type { TicketDetail } from '../type/api/ticketDetail'
+import type { TicketDetail } from '../../type/api/ticketDetail'
 
 defineProps<{
     modelValue: boolean

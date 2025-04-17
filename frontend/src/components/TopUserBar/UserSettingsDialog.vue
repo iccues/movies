@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, defineProps, defineEmits } from 'vue';
 import axios from 'axios';
-import type { Result } from '../type/result';
+import type { Result } from '../../type/result';
 import { ElMessage, ElMessageBox, ElDialog, ElTabs, ElTabPane, ElInput, ElButton } from 'element-plus';
 
 const props = defineProps<{

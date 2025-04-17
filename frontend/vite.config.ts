@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
         input: [
           resolve(__dirname, './index.html'),
           resolve(__dirname, './pages/movie.html'),
-          resolve(__dirname, './pages/space.html'),
+          resolve(__dirname, './pages/manage.html'),
         ],
       },
     },

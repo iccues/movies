@@ -3,8 +3,8 @@ export interface MovieSummary {
     title: string;
 }
 
-export interface MovieDetails {
-    mid: number;
+export interface MovieDetail {
+    mid?: number;
     title: string;
     introduction: string;
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import MovieCard from './components/MovieCard.vue';
-import TopUserBar from './components/TopUserBar.vue';
+import TopUserBar from './components/TopUserBar/TopUserBar.vue';
 import axios from 'axios';
 import type { MovieSummary } from './type/api/movie';
 

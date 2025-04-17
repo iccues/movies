@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElTable, ElTableColumn, ElButton } from 'element-plus'
-import type { MovieDetails } from '../../type/api/movie';
+import type { MovieDetail } from '../../type/api/movie';
 import type { Showtime } from '../../type/api/showtime';
 import axios from 'axios';
-import TopUserBar from '../../components/TopUserBar.vue';
+import TopUserBar from '../../components/TopUserBar/TopUserBar.vue';
 import PayDialog from '../../components/PayDialog.vue'
 
-let movieDetail = ref<MovieDetails | null>(null);
+let movieDetail = ref<MovieDetail | null>(null);
 let showtimes = ref<Showtime[]>([]);
 let mid = new URLSearchParams(window.location.search).get('mid');
 const showPayDialog = ref(false)
 const selectedSid = ref<number | null>(null)
 const username = ref<string | null>(null)
 
-axios.get<MovieDetails>(`/api/movie/movie_info?mid=${mid}`)
+axios.get<MovieDetail>(`/api/movie/movie_info?mid=${mid}`)
     .then(res => movieDetail.value = res.data)
     .catch(err => console.error('Movie fetch failed:', err));
 
