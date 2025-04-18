@@ -2,6 +2,7 @@ package com.iccues.movie.backend.controller.showtime;
 
 import com.iccues.movie.backend.entities.Result;
 import com.iccues.movie.backend.entities.Showtime;
+import com.iccues.movie.backend.entities.ticket.Ticket;
 import com.iccues.movie.backend.utils.DataMapper;
 import com.iccues.movie.backend.utils.UserSession;
 import jakarta.servlet.ServletException;
@@ -28,7 +29,7 @@ public class DeleteShowtime extends HttpServlet {
 
         String sid = req.getParameter("sid");
         try {
-            DataMapper.delete(Showtime.class, "sid = ?", sid);
+            Showtime.delete(sid);
             out.println(Result.Ok());
         } catch (Exception e) {
             out.println(Result.Err(e.getMessage()));

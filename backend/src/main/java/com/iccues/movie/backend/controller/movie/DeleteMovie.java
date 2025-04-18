@@ -29,7 +29,7 @@ public class DeleteMovie extends HttpServlet {
 
         String mid = req.getParameter("mid");
         try {
-            DataMapper.delete(MovieDetail.class, "mid = ?", mid);
+            MovieDetail.delete(mid);
             out.println(Result.Ok());
         } catch (SQLException e) {
             out.println(Result.Err(e.getMessage()));

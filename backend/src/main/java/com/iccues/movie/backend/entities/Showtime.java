@@ -1,7 +1,10 @@
 package com.iccues.movie.backend.entities;
 
+import com.iccues.movie.backend.entities.ticket.Ticket;
+import com.iccues.movie.backend.utils.DataMapper;
 import com.iccues.movie.backend.utils.data.*;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 @DataEntity
@@ -26,6 +29,11 @@ public class Showtime {
             throw new RuntimeException("Tickets sold out");
         }
         bookedSeats += 1;
+    }
+
+    public static void delete(String sid) throws SQLException {
+        DataMapper.delete(Showtime.class, "sid = ?", sid);
+        DataMapper.delete(Ticket.class, "sid = ?", sid);
     }
 
     public Long getSid() {
